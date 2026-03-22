@@ -1,0 +1,468 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────
+   Custom Properties
+─────────────────────────────────────────────────────── */
+:root {
+  --neon-purple: #a855f7;
+  --neon-pink:   #ec4899;
+  --neon-cyan:   #06b6d4;
+  --neon-blue:   #3b82f6;
+  --dark-bg:     #05050f;
+  --card-bg:     #0d0d1f;
+  --card-border: rgba(168,85,247,0.25);
+}
+
+/* ──────────────────────────────────────────────────────
+   Base
+─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--dark-bg);
+  color: #e2e8f0;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ──────────────────────────────────────────────────────
+   Scrollbar
+─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--neon-purple), var(--neon-pink));
+  border-radius: 3px;
+}
+
+/* ──────────────────────────────────────────────────────
+   Animated Gradient Background
+─────────────────────────────────────────────────────── */
+.gradient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(168,85,247,0.25) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 40% at 80% 80%, rgba(6,182,212,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse 50% 50% at 20% 70%, rgba(236,72,153,0.1) 0%, transparent 60%),
+              var(--dark-bg);
+  animation: gradientShift 12s ease-in-out infinite alternate;
+}
+@keyframes gradientShift {
+  0%   { opacity: 1; filter: hue-rotate(0deg); }
+  100% { opacity: 1; filter: hue-rotate(30deg); }
+}
+
+/* ──────────────────────────────────────────────────────
+   Floating particles canvas layer
+─────────────────────────────────────────────────────── */
+.particles-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ──────────────────────────────────────────────────────
+   Grid overlay
+─────────────────────────────────────────────────────── */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(168,85,247,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168,85,247,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ──────────────────────────────────────────────────────
+   Neon text
+─────────────────────────────────────────────────────── */
+.neon-text {
+  background: linear-gradient(135deg, #fff 0%, var(--neon-purple) 40%, var(--neon-pink) 80%, var(--neon-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.neon-text-cyan {
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.neon-text-pink {
+  background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ──────────────────────────────────────────────────────
+   Glow
+─────────────────────────────────────────────────────── */
+.glow-purple {
+  box-shadow: 0 0 20px rgba(168,85,247,0.4), 0 0 60px rgba(168,85,247,0.15);
+}
+.glow-pink {
+  box-shadow: 0 0 20px rgba(236,72,153,0.4), 0 0 60px rgba(236,72,153,0.15);
+}
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(6,182,212,0.4), 0 0 60px rgba(6,182,212,0.15);
+}
+.text-glow-purple {
+  text-shadow: 0 0 20px rgba(168,85,247,0.8), 0 0 40px rgba(168,85,247,0.4);
+}
+
+/* ──────────────────────────────────────────────────────
+   Cards
+─────────────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(13,13,31,0.7);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.glass-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(168,85,247,0.6);
+  box-shadow: 0 20px 60px rgba(168,85,247,0.2), 0 0 0 1px rgba(168,85,247,0.15);
+}
+
+/* ──────────────────────────────────────────────────────
+   3-D Tilt Card
+─────────────────────────────────────────────────────── */
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.15s ease;
+}
+.tilt-card-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease;
+}
+
+/* ──────────────────────────────────────────────────────
+   Rotating ring
+─────────────────────────────────────────────────────── */
+.spin-ring {
+  animation: spinRing 8s linear infinite;
+}
+.spin-ring-reverse {
+  animation: spinRing 12s linear infinite reverse;
+}
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ──────────────────────────────────────────────────────
+   Pulse glow dot
+─────────────────────────────────────────────────────── */
+.pulse-dot {
+  animation: pulseDot 2s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.4); opacity: 0.6; }
+}
+
+/* ──────────────────────────────────────────────────────
+   Floating animation
+─────────────────────────────────────────────────────── */
+.float-anim {
+  animation: floatAnim 4s ease-in-out infinite;
+}
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-18px); }
+}
+
+/* ──────────────────────────────────────────────────────
+   Buttons
+─────────────────────────────────────────────────────── */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+  border: none;
+  border-radius: 50px;
+  padding: 14px 36px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 30px rgba(168,85,247,0.4);
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.btn-primary:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 0 50px rgba(168,85,247,0.6); }
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary span { position: relative; z-index: 1; }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid rgba(168,85,247,0.5);
+  border-radius: 50px;
+  padding: 13px 36px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+.btn-outline:hover {
+  border-color: var(--neon-purple);
+  background: rgba(168,85,247,0.1);
+  box-shadow: 0 0 20px rgba(168,85,247,0.3);
+  color: #fff;
+}
+
+/* ──────────────────────────────────────────────────────
+   Tier Cards
+─────────────────────────────────────────────────────── */
+.tier-card {
+  background: rgba(13,13,31,0.8);
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 24px;
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tier-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(168,85,247,0.06) 0%, rgba(236,72,153,0.04) 100%);
+  pointer-events: none;
+}
+.tier-card.featured {
+  border-color: var(--neon-purple);
+  box-shadow: 0 0 40px rgba(168,85,247,0.25), 0 0 80px rgba(168,85,247,0.08);
+  transform: scale(1.04);
+}
+.tier-card:hover { transform: translateY(-8px) scale(1.01); }
+.tier-card.featured:hover { transform: translateY(-8px) scale(1.05); }
+
+/* ──────────────────────────────────────────────────────
+   Feature Badge
+─────────────────────────────────────────────────────── */
+.feature-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(168,85,247,0.12);
+  border: 1px solid rgba(168,85,247,0.3);
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--neon-purple);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ──────────────────────────────────────────────────────
+   Progress bar
+─────────────────────────────────────────────────────── */
+.progress-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(168,85,247,0.15);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+  animation: fillBar 2s ease forwards;
+}
+@keyframes fillBar {
+  from { width: 0%; }
+}
+
+/* ──────────────────────────────────────────────────────
+   Nav
+─────────────────────────────────────────────────────── */
+.nav-glass {
+  background: rgba(5,5,15,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(168,85,247,0.12);
+}
+
+/* ──────────────────────────────────────────────────────
+   Typewriter cursor
+─────────────────────────────────────────────────────── */
+.cursor-blink {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background: var(--neon-purple);
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: blinkCursor 0.8s step-end infinite;
+}
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ──────────────────────────────────────────────────────
+   Stat counter
+─────────────────────────────────────────────────────── */
+.stat-number {
+  background: linear-gradient(135deg, #fff, var(--neon-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ──────────────────────────────────────────────────────
+   Scrolling ticker
+─────────────────────────────────────────────────────── */
+.ticker-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-track {
+  display: inline-flex;
+  animation: ticker 28s linear infinite;
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ──────────────────────────────────────────────────────
+   Video mock
+─────────────────────────────────────────────────────── */
+.video-mock {
+  background: rgba(13,13,31,0.9);
+  border: 1px solid rgba(168,85,247,0.3);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+.video-scanline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(168,85,247,0.6), transparent);
+  animation: scanLine 3s linear infinite;
+}
+@keyframes scanLine {
+  from { top: -2px; }
+  to   { top: 100%; }
+}
+
+/* ──────────────────────────────────────────────────────
+   Section
+─────────────────────────────────────────────────────── */
+.section { position: relative; z-index: 10; }
+
+/* ──────────────────────────────────────────────────────
+   Orbit
+─────────────────────────────────────────────────────── */
+.orbit-container {
+  position: relative;
+  width: 380px;
+  height: 380px;
+}
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(168,85,247,0.25);
+  inset: 0;
+  margin: auto;
+}
+.orbit-planet {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+/* ──────────────────────────────────────────────────────
+   Step connector
+─────────────────────────────────────────────────────── */
+.step-line {
+  width: 2px;
+  background: linear-gradient(var(--neon-purple), var(--neon-pink));
+  margin: 0 auto;
+  animation: pulseLine 2s ease-in-out infinite;
+}
+@keyframes pulseLine {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+/* ──────────────────────────────────────────────────────
+   Auth Inputs
+─────────────────────────────────────────────────────── */
+.auth-input {
+  width: 100%;
+  background: rgba(168,85,247,0.06);
+  border: 1px solid rgba(168,85,247,0.25);
+  border-radius: 14px;
+  padding: 14px 16px;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  font-family: inherit;
+  -webkit-appearance: none;
+}
+.auth-input::placeholder { color: rgba(148,163,184,0.5); }
+.auth-input:focus {
+  border-color: rgba(168,85,247,0.6);
+  background: rgba(168,85,247,0.09);
+  box-shadow: 0 0 0 3px rgba(168,85,247,0.1);
+}
+.auth-input option { background: #0d0d1f; color: #e2e8f0; }
+
+/* ──────────────────────────────────────────────────────
+   Animated border gradient
+─────────────────────────────────────────────────────── */
+.border-glow-anim {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.border-glow-anim::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(from var(--angle, 0deg), var(--neon-purple), var(--neon-pink), var(--neon-cyan), var(--neon-purple));
+  border-radius: inherit;
+  animation: rotateBorder 4s linear infinite;
+  z-index: -1;
+}
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes rotateBorder {
+  to { --angle: 360deg; }
+}
